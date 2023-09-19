@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -44,6 +42,23 @@ public class PizzaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
+    }
+
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        // aggiungo al model un attributo di tipo Pizza
+        model.addAttribute("pizze", new Pizza());
+        return "pizze/form";
+    }
+
+
+    @PostMapping("/create")
+    public String doCreate(@ModelAttribute("pizze") Pizza formPizza) {
+        // per salvare la pizza sul database, richiamo il pizzaRepository
+        pizzaRepository.save(formPizza);
+        // se la pizza è stata salvata,faccio una redirect alla lista delle pizze
+        return "redirect:/pizza";
     }
 
 
