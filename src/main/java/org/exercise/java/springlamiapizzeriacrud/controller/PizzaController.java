@@ -1,11 +1,13 @@
 package org.exercise.java.springlamiapizzeriacrud.controller;
 
+import jakarta.validation.Valid;
 import org.exercise.java.springlamiapizzeriacrud.model.Pizza;
 import org.exercise.java.springlamiapizzeriacrud.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -54,7 +56,11 @@ public class PizzaController {
 
 
     @PostMapping("/create")
-    public String doCreate(@ModelAttribute("pizze") Pizza formPizza) {
+    public String doCreate(@Valid @ModelAttribute("pizze") Pizza formPizza, BindingResult bindingResult) {
+        // se ci sono errori di validazioni, ritorno al template del form
+        if (bindingResult.hasErrors()) {
+            return "pizze/form";
+        }
         // per salvare la pizza sul database, richiamo il pizzaRepository
         pizzaRepository.save(formPizza);
         // se la pizza è stata salvata,faccio una redirect alla lista delle pizze
