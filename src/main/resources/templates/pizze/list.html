@@ -7,6 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <title>Pizza list</title>
 </head>
 <body>
@@ -29,7 +33,16 @@
             <td th:text="${pizze.description}"></td>
             <td>€ <span th:text="${pizze.price}"></span></td>
             <!-- td con il link -->
-            <td><a th:href="@{/pizza/show/{id} (id=${pizze.id})}" class="btn btn-danger">Detail</a></td>
+            <td class="d-flex">
+                <a th:href="@{/pizza/show/{id} (id=${pizze.id})}" class="btn btn-primary"><i
+                        class="fa-solid fa-pizza-slice"></i></a>
+                <a th:href="@{/pizza/edit/{id} (id=${pizze.id})}" class="btn btn-primary mx-2"><i
+                        class="fa-solid fa-pen-to-square"></i></a>
+                <form th:action="@{/pizza/delete/{id}(id=${pizze.id})}" method="post">
+                    <button type="submit" class="btn btn-danger"><i
+                            class="fa-solid fa-trash"></i></button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
