@@ -22,9 +22,24 @@ public class PizzaController {
     private PizzaRepository pizzaRepository;
 
     @GetMapping
-    public String index(Model model) {
-        List<Pizza> pizzaList = pizzaRepository.findAll();
+    public String index(@RequestParam(name = "keyword") Optional<String> search, Model model) {
+        // preparo la lista di pizze da passare come attributo
+        List<Pizza> pizzaList;
+        // preparo la variabile con il valore con cui precaricare l'input di ricerca
+        String keyword = "";
+        // verifico se ho la stringa di ricerca
+        if (search.isPresent()) {
+            keyword = search.get();
+            // uso il metodo custom della repository per la ricerca filtrata
+            pizzaList = pizzaRepository.findByNameContainingOrDescriptionContaining(keyword, keyword);
+        } else {
+            pizzaList = pizzaRepository.findAll();
+        }
+        //recupero la lista delle pizze alla view tramite model attribute
         model.addAttribute("pizza", pizzaList);
+        // passo anche l'attributo keyword come chiave di ricerca
+        model.addAttribute("keyword", keyword);
+        // ritorno la lista delle pizze
         return "pizze/list";
     }
 
